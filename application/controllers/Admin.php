@@ -24,6 +24,23 @@ class Admin extends MY_Controller
 
 	public function tambah_berita_acara()
 	{
+		if($this->POST('create')) {
+			$id = $this->
+			$data = [
+				'nomor_surat' => $this->POST('nomor_surat'),
+				'nama_supir' =>$this->POST('nama_supir'),
+				'nama_kernet' =>$this->POST('nama_kernet'),
+				'nomor_polisi' =>$this->POST('nomor_polisi'),
+				'nomor_shipment' =>$this->POST('nomor_shipment'),
+				'jam_gate_out' =>$this->POST('jam_gate_out'),
+				'kapasitas_mt' =>$this->POST('kapasitas_mt'),
+				'tujuan' =>$this->POST('tujuan'),
+				'nomor_lo' =>$this->POST('nomor_lo'),
+				'produk' =>$this->POST('produk'),
+				'volume_lo' =>$this->POST('volume_lo'),
+				'hasil_t2_tbbm' =>$this->POST('hasil_t2_tbbm'),
+			];
+		}
 		$this->data['ba'] = $this->Berita_acara_m->get();
 		$this->data['content'] 	= 'tambah-ba';
 		$this->data['title'] = 'BA Pertashop | '.$this->title;
