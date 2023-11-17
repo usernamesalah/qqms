@@ -6,14 +6,14 @@
 </div>
             <div class="card-body">
 
+            <?= $this->session->flashdata('msg') ?>
                 <h4 class="card-title mb-5">Berita Acara Pengisian dibawah kapasitas kompartemen mobil tangki</h4>
                 <table id="datatable-buttons" class="table table-striped table-bordered table-responsive"
                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
                             <th rowspan="2">Nomor Shipment</th>
-                            <th rowspan="2">Nomor Polisi</th>
-                            <th rowspan="2">Supir / Kernet</th>
+                            <th rowspan="2">Mobil</th>
                             <th rowspan="2">Jam Gate Out</th>
                             <th rowspan="2">Kapasitas MT (KL)</th>
                             <th rowspan="2">Tujuan</th>
@@ -22,7 +22,7 @@
                             <th rowspan="2">Volume LO (KL)</th>
                             <th colspan="2">Hasil Pengukuran T2 Level cairan (mm)</th>
                             <th rowspan="2">Selisih</th>
-                            <th rowspan="2">Status</th>
+                            <th rowspan="2"></th>
                         </tr>
                         <tr>
                             <th>Di TBBM</th>
@@ -38,10 +38,16 @@
                                     <?= $b->nomor_shipment ?>
                                 </td>
                                 <td>
+                                    <ul>
+                                        <li>
                                     <?= $b->nomor_polisi ?>
-                                </td>
-                                <td>
+
+                                        </li>
+                                        <li>
                                     <?= $b->nama_supir . " / " . $b->nama_kernet ?>
+
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td>
                                     <?= $b->jam_gate_out ?>
@@ -71,7 +77,9 @@
                                     <?= $b->hasil_t2_tbbm - $b->hasil_t2_diterima ?>
                                 </td>
                                 <td>
-                                    <?= $b->status?>
+                                    <a class="btn btn-sm btn-primary" href="<?= base_url('admin/berita-acara/detail/' . $b->id)?>">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

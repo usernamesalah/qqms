@@ -3,9 +3,10 @@
         <div class="card">
             <div class="card-body">
                 <div class="mt-4">
+            <?= $this->session->flashdata('msg') ?>
                     <h5 class="font-size-14 mb-4"><i class="mdi mdi-arrow-right text-primary me-1"></i> Tambah Berita
                         Acara</h5>
-                    <?= form_open('gatekeeper/tambah-berita-acara') ?>
+                    <?= form_open('admin/berita-acara/tambah') ?>
                         <div class="mb-3">
                             <label class="form-label" for="formrow-firstname-input">Nomor Polisi</label>
                             <input type="text" class="form-control" id="formrow-firstname-input" name="nomor_polisi">
