@@ -1,4 +1,4 @@
-<?php
+<?php 
 defined('BASEPATH') || exit('No direct script allowed');
 class MY_Router extends CI_Router
 {

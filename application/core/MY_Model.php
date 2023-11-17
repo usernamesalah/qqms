@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+
 class MY_Model extends CI_Model
 {
 	protected $data = [];
@@ -26,6 +26,34 @@ class MY_Model extends CI_Model
 		return $query->result();
 	}
 
+	public function select($fields = ['*'], $cond = '')
+	{
+		$this->db->select($fields);
+		$this->db->from($this->data['table_name']);
+		if (is_array($cond))
+			$this->db->where($cond);
+		if (is_string($cond) && strlen($cond) > 3)
+			$this->db->where($cond);
+		
+		$query = $this->db->get();
+
+		return $query->result();
+	}
+
+	public function select_row($fields = ['*'], $cond = '')
+	{
+		$this->db->select($fields);
+		$this->db->from($this->data['table_name']);
+		if (is_array($cond))
+			$this->db->where($cond);
+		if (is_string($cond) && strlen($cond) > 3)
+			$this->db->where($cond);
+		
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
 	public function get_by_order($ref, $order, $cond = '')
 	{
 		if (is_array($cond))
@@ -45,8 +73,10 @@ class MY_Model extends CI_Model
 			$this->db->where($cond);
 		if (is_string($cond) && strlen($cond) > 3)
 			$this->db->where($cond);
+
 		if ($order_by != null)
 			$this->db->order_by($order_by, 'DESC');
+					
 		$this->db->order_by($this->data['primary_key'], 'DESC');
 		$this->db->limit(1);
 		$query = $this->db->get($this->data['table_name']);
@@ -137,6 +167,19 @@ class MY_Model extends CI_Model
 		return $this->db->get($this->data['table_name'])->result();
 	}
 
+	public function getDataJoinRow($tables, $jcond , $cond='')
+	{
+		$this->db->select('*');
+		for ($i = 0; $i < count($tables); $i++)
+			$this->db->join($tables[$i], $jcond[$i]);
+		if (is_array($cond))
+			$this->db->where($cond);
+		if (is_string($cond) && strlen($cond) > 3)
+			$this->db->where($cond);
+		
+		return $this->db->get($this->data['table_name'])->row();
+	}
+
 	public function getJSON($url)
 	{
 		$content = file_get_contents($url);
@@ -166,9 +209,9 @@ class MY_Model extends CI_Model
 		return $this->validate($rules);
 	}
 
-	public function flashmsg($msg, $type = 'success')
+	public function flashmsg($msg, $type = 'success',$name='msg')
 	{
-		return $this->session->set_flashdata('msg', '<div class="alert alert-'.$type.'">'.$msg.'</div>');
+		return $this->session->set_flashdata($name, '<div class="alert alert-'.$type.' alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'.$msg.'</div>');
 	}
 
 	public function get_col($col)
