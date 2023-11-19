@@ -11,7 +11,7 @@
                             <li><?= $ba->nama_supir . " / " . $ba->nama_kernet ?></li>
                             <li>Tujuan <?= $ba->tujuan ?></li>
                         </ul>
-                        <?= form_open('admin/update-kapasitas-ba' , ['class'=> 'row row-cols-lg-auto gx-3 gy-2 align-items-center']) ?>
+                        <?= form_open('pertashop/update-kapasitas-ba' , ['class'=> 'row row-cols-lg-auto gx-3 gy-2 align-items-center']) ?>
                         <div class="col-12">
                             <label class="visually-hidden" for="specificSizeInputName">Hasil Pengukuran T2 Level diterima</label>
                             <input type="number"class="form-control" id="specificSizeInputName"

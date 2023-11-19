@@ -11,46 +11,85 @@ class Login extends MY_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$username = $this->session->userdata('username');
-		if (isset($username))
-		{
-			$this->data['id_role'] = $this->session->userdata('id_role');
-			switch ($this->data['id_role'])
+
+		$this->load->library("ci_jwt");
+        $this->data['token'] = $this->session->userdata('token');
+
+        if (isset($this->data['token'])) {
+            $role = $this->ci_jwt->decode($this->data['token']);
+			switch ($role)
 			{
 				case 1:
+					redirect('gatekeeper');
+					break;
+					
+				case 2:
+					redirect('pertashop');
+					break;
+					
+				default:
 					redirect('admin');
 					break;
 			}
 
 			exit;
 		}
-		$this->load->model('User_m');
 	}
 
 	public function index()
 	{
-		if ($this->POST('login-submit'))
-		{
-			if (!$this->User_m->required_input(['username','password'])) 
-			{
-				$this->flashmsg('Data harus lengkap','warning');
+		if ($this->POST('login')) {
+			$email = $this->POST('email');
+			if (!isset($email)) {
+				$this->flashmsg('email tidak boleh kosong', 'danger');
 				redirect('login');
 				exit;
 			}
-			
-			$this->data = [
-			'username'	=> $this->POST('username'),
-			'password'	=> md5($this->POST('password'))
-			];
 
-			$result = $this->User_m->login($this->data);
-			if (!isset($result)) 
-			{
-				$this->flashmsg('Username atau password salah','danger');
+			$password = $this->POST('password');
+			if (!isset($password)) {
+				$this->flashmsg('password tidak boleh kosong', 'danger');
+				redirect('login');
+				exit;
 			}
-			redirect('login');
+
+			$this->data['user'] = $this->User_m->get_row(['email' => $email]);
+			if (!isset($this->data['user'])) {
+				$this->flashmsg('email yang anda masukkan salah', 'danger');
+				redirect('login');
+				exit;
+			}
+
+			if (!password_verify($password , $this->data['user']->password)) {
+				$this->flashmsg('password yang anda masukkan salah', 'danger');
+				redirect('login');
+				exit;
+			}
+
+			$token = $this->ci_jwt->encode([
+				'email' => $this->data['user']->email,
+				'role' =>$this->data['user']->role
+			]);
+
+			$this->session->set_userdata(['token' => $token]);
+
+			switch ($this->data['user']->role)
+			{
+				case 1:
+					redirect('gatekeeper');
+					break;
+					
+				case 2:
+					redirect('pertashop');
+					break;
+					
+				default:
+					redirect('admin');
+					break;
+			}
 			exit;
 		}
+
 		$this->load->view('login');
 	}
 }

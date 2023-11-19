@@ -39,17 +39,12 @@
 				<div class="dropdown d-inline-block">
 					<button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
 						data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<img class="rounded-circle header-profile-user" src="<?= base_url() ?>/assets/images/users/avatar-4.jpg"
-							alt="Header Avatar">
-						<span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">Marcus</span>
+						
+						<span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15"><?= $profile->email ?></span>
 						<i class="uil-angle-down d-none d-xl-inline-block font-size-15"></i>
 					</button>
 					<div class="dropdown-menu dropdown-menu-end">
-						<!-- item-->
-						<a class="dropdown-item" href="#"><i
-								class="uil uil-user-circle font-size-18 align-middle text-muted me-1"></i> <span
-								class="align-middle">View Profile</span></a>
-						<a class="dropdown-item" href="#"><i
+						<a class="dropdown-item" href="<?= base_url('logout') ?>"><i
 								class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"></i> <span
 								class="align-middle">Sign out</span></a>
 					</div>
@@ -66,21 +61,46 @@
 						<ul class="navbar-nav">
 
 							<li class="nav-item">
-								<a class="nav-link" href="index.html">
+								<?php
+									switch ($profile->role) {
+										case 1:
+											$url = 'gatekeeper';
+											break;
+											case 2:
+												$url = 'pertashop';
+												break;
+										default:
+										$url = 'admin';
+											break;
+									}
+									?>
+								<a class="nav-link" href="<?= base_url() . "/" . $url ?>">
 									<i class="uil-home-alt me-2"></i> Dashboard
 								</a>
 							</li>
 
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button">
-									<i class="uil-apps me-2"></i>BA Pertashop <div class="arrow-down"></div>
+									<i class="uil-apps me-2"></i>Berita Acara <div class="arrow-down"></div>
 								</a>
 								<div class="dropdown-menu" aria-labelledby="topnav-pages">
+									<?php if ( $profile->role < 2 ): 
+										$prefix	= ($profile->role == 0) ? 'admin' : 'gatekeeper';
+									?>
+										<a href="<?= base_url($prefix .'/berita-acara') ?>"
+											class="dropdown-item">Lihat Data</a>
+										<a href="<?= base_url('gatekeeper/berita-acara/tambah') ?>"
+											class="dropdown-item">Tambah Data</a>
+									<?php endif ?>
 
-									<a href="<?= base_url('admin/ba-pertashop') ?>" class="dropdown-item">Lihat Data</a>
-									<a href="<?= base_url() ?>" class="dropdown-item">Tambah Data</a>
+									<?php if ( $profile->role == 2 ): ?>
+										<a href="<?= base_url('pertashop/berita-acara/input-spbu') ?>"
+											class="dropdown-item">Update Kapasitas</a>
+									<?php endif ?>
+
 								</div>
 							</li>
+							<?php if ( $profile->role == 0 ): ?>
 
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button">
@@ -88,20 +108,17 @@
 								</a>
 								<div class="dropdown-menu" aria-labelledby="topnav-pages">
 
-									<a href="<?= base_url() ?>" class="dropdown-item">Lihat Data</a>
-									<a href="<?= base_url() ?>" class="dropdown-item">Tambah Data</a>
+									<a href="<?= base_url('admin/') ?>" class="dropdown-item">Lihat Data</a>
+									<a href="<?= base_url('admin/') ?>" class="dropdown-item">Tambah Data</a>
 								</div>
 							</li>
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button">
-									<i class="uil-user me-2"></i>Manage Users <div class="arrow-down"></div>
+							<li class="nav-item">
+								<a class="nav-link" href="<?= base_url('admin/user') ?>">
+									<i class="fa fa-user me-2"></i> Manage User
 								</a>
-								<div class="dropdown-menu" aria-labelledby="topnav-pages">
-
-									<a href="<?= base_url() ?>" class="dropdown-item">Lihat Data</a>
-									<a href="<?= base_url() ?>" class="dropdown-item">Tambah Data</a>
-								</div>
 							</li>
+							<?php endif ?>
+
 						</ul>
 					</div>
 				</nav>

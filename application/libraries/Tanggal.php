@@ -57,7 +57,7 @@ class Tanggal
 		if (count($split) > 1)
 		{
 			$date = DateTime::createFromFormat('Y-m-d H:i:s', $split[0] . ' ' . $split[1]);
-			$result = $date->format('H:i A') . ' - ' . $result;
+			$result .= " - " . $date->format('H:i A');
 		}
 
 		return $result;

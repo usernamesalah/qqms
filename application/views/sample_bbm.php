@@ -2,91 +2,102 @@
     <div class="col-12">
         <div class="card">
             <div class="card-title m-3">
-                <?php
-                $url = ($profile->role == 0) ? 'admin' : 'gatekeeper' . '/ba-pertashop/tambah';
-                ?>
-                <a href="<?= base_url($url)?>" target="_blank" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Data</a>
-</div>
+                <a href="<?= base_url('admin/sample-bbm/tambah') ?>" target="_blank" class="btn btn-success"><i
+                        class="fa fa-plus"></i> Tambah Data</a>
+            </div>
             <div class="card-body">
 
-            <?= $this->session->flashdata('msg') ?>
-                <h4 class="card-title mb-5">Berita Acara Pengisian dibawah kapasitas kompartemen mobil tangki</h4>
-                <table id="datatable-buttons" class="table table-striped table-bordered table-responsive"
+                <?= $this->session->flashdata('msg') ?>
+                <h4 class="card-title mb-5">Daftar Stock Sample BBM</h4>
+                <table id="datatable-buttons" class="table table-responsive"
                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
-                            <th rowspan="2">Nomor Shipment</th>
-                            <th rowspan="2">Mobil</th>
-                            <th rowspan="2">Jam Gate Out</th>
-                            <th rowspan="2">Kapasitas MT (KL)</th>
-                            <th rowspan="2">Tujuan</th>
-                            <th rowspan="2">Nomor LO</th>
-                            <th rowspan="2">Produk</th>
-                            <th rowspan="2">Volume LO (KL)</th>
-                            <th colspan="2">Hasil Pengukuran T2 Level cairan (mm)</th>
-                            <th rowspan="2">Selisih</th>
-                            <th rowspan="2"></th>
-                        </tr>
-                        <tr>
-                            <th>Di TBBM</th>
-                            <th>Diterima</th>
+                            <th>No</th>
+                            <th>Produk / Jenis BBM</th>
+                            <th>Asal Sample</th>
+                            <th>Tanggal Masuk</th>
+                            <th>Tanggal Pemusnahan</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                            <th></th>
                         </tr>
                     </thead>
 
 
                     <tbody>
-                        <?php foreach ($ba as $b): ?>
+                        <?php $i = 0;
+                        $total_quantity = 0;
+                        foreach ($sample as $bbm):
+                            $total_quantity += $bbm->quantity;
+                            if ( $bbm->status != "release" )
+                            {
+                                if ( $bbm->df <= 1 )
+                                {
+                                    $cl = "class='badge bg-danger'";
+                                }
+                                elseif ( $bbm->df > 1 && $bbm->df < 5 )
+                                {
+                                    $cl = "class='badge bg-warning'";
+                                }
+                            }
+                            else
+                            {
+                                $cl = "class='badge bg-success'";
+                            }
+                            ?>
                             <tr>
                                 <td>
-                                    <?= $b->nomor_shipment ?>
+                                    <?= ++$i ?>
                                 </td>
                                 <td>
-                                    <ul>
-                                        <li>
-                                    <?= $b->nomor_polisi ?>
-
-                                        </li>
-                                        <li>
-                                    <?= $b->nama_supir . " / " . $b->nama_kernet ?>
-
-                                        </li>
-                                    </ul>
+                                    <?= $bbm->jenis ?>
                                 </td>
                                 <td>
-                                    <?= $b->jam_gate_out ?>
+                                    <?= $bbm->asal ?>
                                 </td>
                                 <td>
-                                    <?= $b->kapasitas_mt ?>
+                                    <?= $bbm->tanggal_masuk ?>
                                 </td>
                                 <td>
-                                    <?= $b->tujuan ?>
+                                    <?= $bbm->tanggal_release ?>
                                 </td>
                                 <td>
-                                    <?= $b->nomor_lo ?>
+                                    <?= $bbm->quantity ?>
+                                </td>
+                                <td <?= $cl ?>>
+                                    <?php
+                                    if ( $bbm->status != "release" )
+                                    {
+                                        echo 'H ' . $bbm->df * -1;
+                                    }
+                                    else
+                                    {
+                                        echo "Released";
+                                    }
+                                    ?>
                                 </td>
                                 <td>
-                                    <?= $b->produk ?>
-                                </td>
-                                <td>
-                                    <?= $b->volume_lo ?>
-                                </td>
-                                <td>
-                                    <?= $b->hasil_t2_tbbm ?>
-                                </td>
-                                <td>
-                                    <?= $b->hasil_t2_diterima ?>
-                                </td>
-                                <td>
-                                    <?= $b->hasil_t2_tbbm - $b->hasil_t2_diterima ?>
-                                </td>
-                                <td>
-                                    <a class="btn btn-sm btn-primary" href="<?= base_url('admin/berita-acara/detail/' . $b->id)?>">
-                                        <i class="fa fa-eye"></i>
+                                    <a class="btn btn-sm btn-success"
+                                        href="<?= base_url('admin/sample-bbm/release/' . $bbm->id) ?>">
+                                        <i class="fa fa-checklist"></i> Update Release
+                                    </a>
+                                    <a class="btn btn-sm btn-danger"
+                                        href="<?= base_url('admin/sample-bbm/delete/' . $bbm->id) ?>">
+                                        <i class="fa fa-trash"></i> Hapus
                                     </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="6">Total :
+                                <?= $total_quantity ?>
+                            </th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

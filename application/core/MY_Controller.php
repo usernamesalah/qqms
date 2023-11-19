@@ -2,8 +2,12 @@
 
 class MY_Controller extends CI_Controller
 {
-	public $title = 'QQMS - Pertamina | ';
+	public $title = 'QQMS - PT. Pertamina';
 
+	protected $status_sample = [
+		'waiting',
+		'release'
+	];
 	public function __construct()
 	{
 		parent::__construct();
