@@ -93,6 +93,7 @@ class Admin extends MY_Controller
 			$data = [
 			 'name' => $this->POST('name'),
 			 'email' => $this->POST('email'),
+			 'role' => $this->POST('role'),
 			 'password' => password_hash('123456', PASSWORD_BCRYPT)
 			];
 

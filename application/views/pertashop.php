@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-title m-3">
                 <?php
-                $url = ($profile->role == 0) ? 'admin' : 'gatekeeper' . '/ba-pertashop/tambah';
+                $url = ($profile->role == 0) ? 'admin' : 'gatekeeper' . '/berita-acara/tambah';
                 ?>
                 <a href="<?= base_url($url)?>" target="_blank" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Data</a>
 </div>

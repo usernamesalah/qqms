@@ -108,8 +108,8 @@
 								</a>
 								<div class="dropdown-menu" aria-labelledby="topnav-pages">
 
-									<a href="<?= base_url('admin/') ?>" class="dropdown-item">Lihat Data</a>
-									<a href="<?= base_url('admin/') ?>" class="dropdown-item">Tambah Data</a>
+									<a href="<?= base_url('admin/sample-bbm') ?>" class="dropdown-item">Lihat Data</a>
+									<a href="<?= base_url('admin/sample-bbm') ?>" class="dropdown-item">Tambah Data</a>
 								</div>
 							</li>
 							<li class="nav-item">
