@@ -32,7 +32,7 @@ class Sample_bbm_m extends MY_Model
 
 	public function getOrderedAndClosest()
 	{
-		$query = $this->db->query('SELECT * , DATEDIFF( tanggal_release, NOW() ) as df FROM sample_bbm ORDER BY DATEDIFF( tanggal_release, NOW() ) DESC;');
+		$query = $this->db->query('SELECT * , DATEDIFF( tanggal_release, NOW() ) as df FROM sample_bbm WHERE status != "release" ORDER BY DATEDIFF( tanggal_release, NOW() ) DESC;');
 		return $query->result();
 	}
 }

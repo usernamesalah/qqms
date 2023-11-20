@@ -54,6 +54,12 @@
                         </div>
                     </div>
 
+                    <div class="row mb-4">
+                        <label for="horizontal-email-input" class="col-sm-3 col-form-label">Keterangan</label>
+                        <div class="col-sm-9">
+                            <input type="keterangan" name="keterangan" class="form-control" id="horizontal-email-input">
+                        </div>
+                    </div>
                     <div class="mt-4">
                         <input type="submit" class="btn btn-primary w-md" value="Simpan" name="tambah">
                     </div>

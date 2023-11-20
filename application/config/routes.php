@@ -53,11 +53,12 @@ $route['default_controller'] = 'admin';
 $route['admin/berita-acara/tambah'] = 'admin/tambah-berita-acara';
 $route['admin/berita-acara/detail/(:any)'] = 'admin/detail-berita-acara/$1';
 $route['admin/berita-acara/approve/(:any)'] = 'admin/approve-berita-acara/$1';
+$route['admin/user/delete/(:any)'] = 'admin/delete-user/$1';
+$route['admin/user/reset-password/(:any)'] = 'admin/reset-password-user/$1';
+
 $route['gatekeeper/berita-acara/tambah'] = 'gatekeeper/tambah-berita-acara';
 $route['gatekeeper/berita-acara/detail/(:any)'] = 'gatekeeper/detail-berita-acara/$1';
 
-$route['admin/user/delete/(:any)'] = 'admin/delete-user/$1';
-$route['admin/user/reset-password/(:any)'] = 'admin/reset-password-user/$1';
 
 $route['admin/sample-bbm/delete/(:any)'] = 'admin/delete-sample-bbm/$1';
 $route['admin/sample-bbm/release/(:any)'] = 'admin/release-sample-bbm/$1';

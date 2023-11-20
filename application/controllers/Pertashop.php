@@ -54,7 +54,12 @@ class Pertashop extends MY_Controller
 		}
 
 		if($this->POST('update')){
-			$this->Berita_acara_m->update($id , ['hasil_t2_diterima' => $this->POST('hasil_t2_diterima')]);
+			$data = [
+				'pengukuran_spbu_sebelum' => $this->POST('pengukuran_spbu_sebelum'),
+				'pengukuran_spbu_setelah' => $this->POST('pengukuran_spbu_setelah'),
+			];
+
+			$this->Berita_acara_m->update($id , $data);
 			$this->flashmsg('data telah diupdate', 'success');
 			redirect('pertashop/input-spbu');
 			exit;
@@ -68,11 +73,11 @@ class Pertashop extends MY_Controller
 	public function search_ba()
 	{
 		$q = strtolower($this->GET('q'));
-		$data = $this->Berita_acara_m->getDataLike(['LOWER(nomor_polisi)' => $q]);
+		$data = $this->Berita_acara_m->search($q);
 		$html = '';
 		foreach ($data as $dt) {
 			$ur = base_url('pertashop/update-kapasitas-ba') . "/" . $dt->id;
-			$html .= '<li class="feed-item"><a href="' . $ur .'"><p class="mb-0">'.$dt->nomor_surat.'</p><p class="mb-0">'.$dt->nomor_polisi.'</p><p class="mb-0">'.$dt->nama_supir . '/' . $dt->nama_kernet.'</p><p class="mb-0">Tujuan '.$dt->tujuan.'</p></a></li>';
+			$html .= '<li class="feed-item"><a href="' . $ur .'"><p class="mb-0">'.$dt->nomor_surat.'</p><p class="mb-0">'.$dt->nomor_polisi.'</p><p class="mb-0">'.$dt->nama_supir . '/' . $dt->nama_kernet.'</p><p class="mb-0">Tujuan '.$dt->tujuan.' - SPBU / Pertashop ke - '.$dt->urutan_spbu.'</p></a></li>';
 		}
 
 		echo $html;

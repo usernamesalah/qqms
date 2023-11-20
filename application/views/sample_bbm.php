@@ -19,6 +19,7 @@
                             <th>Tanggal Masuk</th>
                             <th>Tanggal Pemusnahan</th>
                             <th>Quantity</th>
+                            <th>Keterangan</th>
                             <th>Status</th>
                             <th></th>
                         </tr>
@@ -64,6 +65,9 @@
                                 </td>
                                 <td>
                                     <?= $bbm->quantity ?>
+                                </td>
+                                <td>
+                                    <?= $bbm->keterangan ?>
                                 </td>
                                 <td <?= $cl ?>>
                                     <?php

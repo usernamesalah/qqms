@@ -42,9 +42,38 @@ class Admin extends MY_Controller
 		$this->template($this->data);
 	}
 
+
 	public function berita_acara()
 	{
-		$this->data['ba'] = $this->Berita_acara_m->get();
+		$ba= $this->Berita_acara_m->get(['status' => 0]);
+		foreach ($ba as $value) {
+			if(isset($this->data['ba'][$value->nomor_surat])) {
+				$this->data['ba'][$value->nomor_surat]['spbu_2'] = [
+					'tujuan' =>$value->tujuan,
+					'produk' =>$value->produk,
+					'nomor_lo' =>$value->nomor_lo,
+					'pengukuran_spbu_sebelum' => $value->pengukuran_spbu_sebelum
+				];
+			} else {
+				$this->data['ba'][$value->nomor_surat] = [
+					'nomor_surat' =>$value->nomor_surat,
+					'nama_supir' => $value->nama_supir,
+					'nama_kernet' => $value->nama_kernet,
+					'nomor_polisi' => $value->nomor_polisi,
+					'jam_gate_out' =>$value->jam_gate_out,
+					'kapasitas_mt' => $value->kapasitas_mt,
+					'status' => $value->status,
+					'spbu_1' => [
+					'tujuan' =>$value->tujuan,
+					'produk' =>$value->produk,
+					'nomor_lo' =>$value->nomor_lo,
+						'pengukuran_spbu_sebelum' => $value->pengukuran_spbu_sebelum,
+						'pengukuran_spbu_setelah' => $value->pengukuran_spbu_setelah
+					]
+				];
+
+			}
+		}
 		$this->data['content'] = 'pertashop';
 		$this->data['title'] = 'BA Pertashop | ' . $this->title;
 		$this->template($this->data);
@@ -58,8 +87,41 @@ class Admin extends MY_Controller
 			redirect('admin/berita-acara');
 			exit;
 		}
-		$this->data['ba'] = $this->Berita_acara_m->get_row(['id' => $id]);
-		$this->data['ba']->created_at = $this->tanggal->convert_date($this->data['ba']->created_at);
+		$id = str_replace('_' , "/", $id);
+		$ba = $this->Berita_acara_m->get(['LOWER(nomor_surat)' => $id]);
+		foreach($ba as $value){
+			if($value->urutan_spbu == 1) {
+				$this->data['ba'] = [
+					'nomor_surat' =>$value->nomor_surat,
+					'nama_supir' => $value->nama_supir,
+					'nama_kernet' => $value->nama_kernet,
+					'nomor_polisi' => $value->nomor_polisi,
+					'jam_gate_out' =>$value->jam_gate_out,
+					'kapasitas_mt' => $value->kapasitas_mt,
+					'pengukuran_tbbm' => $value->pengukuran_tbbm,
+					'status' => $value->status,
+					'created_at' => $this->tanggal->convert_date($value->created_at),
+					'spbu_1' => [
+						'tujuan' =>$value->tujuan,
+						'produk' =>$value->produk,
+						'volume_lo' =>$value->volume_lo,
+						'nomor_lo' =>$value->nomor_lo,
+							'pengukuran_spbu_sebelum' => $value->pengukuran_spbu_sebelum,
+							'pengukuran_spbu_setelah' => $value->pengukuran_spbu_setelah
+					]
+				];
+			} else {
+				$this->data['ba']['spbu_2'] = [
+					'tujuan' =>$value->tujuan,
+					'produk' =>$value->produk,
+					'nomor_lo' =>$value->nomor_lo,
+					'volume_lo' =>$value->volume_lo,
+					'pengukuran_spbu_sebelum' => $value->pengukuran_spbu_sebelum
+				];
+			}
+		}
+
+		// echo json_encode($this->data);exit;
 		$this->data['content'] = 'detail_berita_acara';
 		$this->data['title'] = 'Detail Berita Acara | ' . $this->title;
 		$this->template($this->data);
@@ -73,7 +135,8 @@ class Admin extends MY_Controller
 			redirect('admin/berita-acara');
 			exit;
 		}
-		$this->Berita_acara_m->update($id, ['status' => 1]);
+		$id = str_replace('_' , "/", $id);
+		$this->Berita_acara_m->update_where(['LOWER(nomor_surat)' => $id], ['status' => 1]);
 		$this->flashmsg('Berhasil approve berita acara', 'success');
 
 		redirect('admin/berita-acara');
@@ -175,6 +238,8 @@ class Admin extends MY_Controller
 			 'quantity' => $this->POST('quantity'),
 			 'tanggal_masuk' => $this->POST('tanggal_masuk'),
 			 'tanggal_release' => $tgl_release,
+			 'keterangan' => $this->POST('keterangan'),
+		
 			 'status' => 'waiting'
 			];
 			

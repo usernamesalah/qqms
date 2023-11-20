@@ -15,21 +15,13 @@
                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
-                            <th rowspan="2">Nomor Shipment</th>
-                            <th rowspan="2">Mobil</th>
-                            <th rowspan="2">Jam Gate Out</th>
-                            <th rowspan="2">Kapasitas MT (KL)</th>
-                            <th rowspan="2">Tujuan</th>
-                            <th rowspan="2">Nomor LO</th>
-                            <th rowspan="2">Produk</th>
-                            <th rowspan="2">Volume LO (KL)</th>
-                            <th colspan="2">Hasil Pengukuran T2 Level cairan (mm)</th>
-                            <th rowspan="2">Selisih</th>
-                            <th rowspan="2"></th>
-                        </tr>
-                        <tr>
-                            <th>Di TBBM</th>
-                            <th>Diterima</th>
+                            <th>Mobil</th>
+                            <th>Jam Gate Out</th>
+                            <th>Kapasitas MT (KL)</th>
+                            <th>Tujuan</th>
+                            <th>Nomor LO</th>
+                            <th>Produk</th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -38,49 +30,62 @@
                         <?php foreach ($ba as $b): ?>
                             <tr>
                                 <td>
-                                    <?= $b->nomor_shipment ?>
-                                </td>
-                                <td>
                                     <ul>
                                         <li>
-                                    <?= $b->nomor_polisi ?>
+                                    <?= $b['nomor_polisi'] ?>
 
                                         </li>
                                         <li>
-                                    <?= $b->nama_supir . " / " . $b->nama_kernet ?>
+                                    <?= $b['nama_supir'] . " / " . $b['nama_kernet'] ?>
 
                                         </li>
                                     </ul>
                                 </td>
                                 <td>
-                                    <?= $b->jam_gate_out ?>
+                                    <?= $b['jam_gate_out'] ?>
                                 </td>
                                 <td>
-                                    <?= $b->kapasitas_mt ?>
+                                    <?= $b['kapasitas_mt'] ?>
                                 </td>
                                 <td>
-                                    <?= $b->tujuan ?>
+                                    <ul>
+                                        <li>
+                                            SPBU 1 : <?= $b['spbu_1']['tujuan'] ?>
+                        </li>
+                        <li>
+                                            SPBU 2 : <?= $b['spbu_2']['tujuan'] ?>
+                        </li>
+                        </ul>
+                                    
                                 </td>
                                 <td>
-                                    <?= $b->nomor_lo ?>
+                                   
+                                <ul>
+                                        <li>
+                                            SPBU 1 : <?= $b['spbu_1']['nomor_lo'] ?>
+                        </li>
+                        <li>
+                                            SPBU 2 : <?= $b['spbu_2']['nomor_lo'] ?>
+                        </li>
+                        </ul>
                                 </td>
                                 <td>
-                                    <?= $b->produk ?>
+                                    
+                                <ul>
+                                        <li>
+                                            SPBU 1 : <?= $b['spbu_1']['produk'] ?>
+                        </li>
+                        <li>
+                                            SPBU 2 : <?= $b['spbu_2']['produk'] ?>
+                        </li>
+                        </ul>
                                 </td>
                                 <td>
-                                    <?= $b->volume_lo ?>
-                                </td>
-                                <td>
-                                    <?= $b->hasil_t2_tbbm ?>
-                                </td>
-                                <td>
-                                    <?= $b->hasil_t2_diterima ?>
-                                </td>
-                                <td>
-                                    <?= $b->hasil_t2_tbbm - $b->hasil_t2_diterima ?>
-                                </td>
-                                <td>
-                                    <a class="btn btn-sm btn-primary" href="<?= base_url('admin/berita-acara/detail/' . $b->id)?>">
+                                    <?php
+                                    $nomor = str_replace("/" , "-" ,$b['nomor_surat']);
+                                    $role = ($profile->role == 0) ? 'admin' : 'gatekeeper';
+                                    ?>
+                                    <a class="btn btn-sm btn-primary" href="<?= base_url($role .'/berita-acara/detail/' . strtolower($nomor))?>">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                 </td>
