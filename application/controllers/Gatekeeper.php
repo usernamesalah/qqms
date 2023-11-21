@@ -38,7 +38,7 @@ class Gatekeeper extends MY_Controller
 
 	public function berita_acara()
 	{
-		$ba= $this->Berita_acara_m->get(['status' => 0]);
+		$ba= $this->Berita_acara_m->get();
 		foreach ($ba as $value) {
 			if(isset($this->data['ba'][$value->nomor_surat])) {
 				$this->data['ba'][$value->nomor_surat]['spbu_2'] = [
@@ -58,6 +58,7 @@ class Gatekeeper extends MY_Controller
 					'spbu_1' => [
 					'tujuan' =>$value->tujuan,
 					'produk' =>$value->produk,
+					'status' =>$value->status,
 					'nomor_lo' =>$value->nomor_lo,
 						'pengukuran_spbu_sebelum' => $value->pengukuran_spbu_sebelum,
 						'pengukuran_spbu_setelah' => $value->pengukuran_spbu_setelah
@@ -165,5 +166,34 @@ class Gatekeeper extends MY_Controller
 		$this->data['content'] = 'detail_berita_acara';
 		$this->data['title'] = 'Detail Berita Acara | ' . $this->title;
 		$this->template($this->data);
+	}
+	public function change_password()
+	{
+		if ( $this->POST('simpan') )
+		{
+			if ( $this->POST('password') == "" )
+			{
+				$this->flashmsg('password tidak boleh kosong', 'danger');
+				redirect('gatekeeper');
+				exit;
+			}
+			if ( $this->POST('confirm_password') == "" )
+			{
+				$this->flashmsg('confirm password tidak boleh kosong', 'danger');
+				redirect('gatekeeper');
+				exit;
+			}
+			if ( $this->POST('password') != $this->POST('confirm_password') )
+			{
+				$this->flashmsg(' password tidak sama ', 'danger');
+				redirect('gatekeeper');
+				exit;
+			}
+			$this->User_m->update_where(['email' => $this->data['profile']->email], ['password' => password_hash($this->POST('password'), PASSWORD_BCRYPT)]);
+			$this->flashmsg('Success update password ', 'success');
+			redirect('gatekeeper');
+			exit;
+		}
+		exit;
 	}
 }

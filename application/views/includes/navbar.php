@@ -39,17 +39,22 @@
 				<div class="dropdown d-inline-block">
 					<button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
 						data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						
-						<span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15"><?= $profile->email ?></span>
+
+						<span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">
+							<?= $profile->email ?>
+						</span>
 						<i class="uil-angle-down d-none d-xl-inline-block font-size-15"></i>
 					</button>
 					<div class="dropdown-menu dropdown-menu-end">
+						<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#myModal"><i
+								class="fa fa-user font-size-18 align-middle me-1 text-muted"></i> <span
+								class="align-middle">Ganti Password</span></a>
 						<a class="dropdown-item" href="<?= base_url('logout') ?>"><i
 								class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"></i> <span
 								class="align-middle">Sign out</span></a>
 					</div>
 				</div>
-
+				<!-- <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#myModal">Standard modal</button> -->
 			</div>
 		</div>
 		<div class="container-fluid">
@@ -62,18 +67,19 @@
 
 							<li class="nav-item">
 								<?php
-									switch ($profile->role) {
-										case 1:
-											$url = 'gatekeeper';
-											break;
-											case 2:
-												$url = 'pertashop';
-												break;
-										default:
+								switch ($profile->role)
+								{
+									case 1:
+										$url = 'gatekeeper';
+										break;
+									case 2:
+										$url = 'pertashop';
+										break;
+									default:
 										$url = 'admin';
-											break;
-									}
-									?>
+										break;
+								}
+								?>
 								<a class="nav-link" href="<?= base_url() . "/" . $url ?>">
 									<i class="uil-home-alt me-2"></i> Dashboard
 								</a>
@@ -84,11 +90,11 @@
 									<i class="uil-apps me-2"></i>Berita Acara <div class="arrow-down"></div>
 								</a>
 								<div class="dropdown-menu" aria-labelledby="topnav-pages">
-									<?php if ( $profile->role < 2 ): 
-										$prefix	= ($profile->role == 0) ? 'admin' : 'gatekeeper';
-									?>
-										<a href="<?= base_url($prefix .'/berita-acara') ?>"
-											class="dropdown-item">Lihat Data</a>
+									<?php if ( $profile->role < 2 ):
+										$prefix = ($profile->role == 0) ? 'admin' : 'gatekeeper';
+										?>
+										<a href="<?= base_url($prefix . '/berita-acara') ?>" class="dropdown-item">Lihat
+											Data</a>
 										<a href="<?= base_url('gatekeeper/berita-acara/tambah') ?>"
 											class="dropdown-item">Tambah Data</a>
 									<?php endif ?>
@@ -102,21 +108,21 @@
 							</li>
 							<?php if ( $profile->role == 0 ): ?>
 
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button">
-									<i class="uil-apps me-2"></i>Sample BBM <div class="arrow-down"></div>
-								</a>
-								<div class="dropdown-menu" aria-labelledby="topnav-pages">
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button">
+										<i class="uil-apps me-2"></i>Sample BBM <div class="arrow-down"></div>
+									</a>
+									<div class="dropdown-menu" aria-labelledby="topnav-pages">
 
-									<a href="<?= base_url('admin/sample-bbm') ?>" class="dropdown-item">Lihat Data</a>
-									<a href="<?= base_url('admin/sample-bbm') ?>" class="dropdown-item">Tambah Data</a>
-								</div>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="<?= base_url('admin/user') ?>">
-									<i class="fa fa-user me-2"></i> Manage User
-								</a>
-							</li>
+										<a href="<?= base_url('admin/sample-bbm') ?>" class="dropdown-item">Lihat Data</a>
+										<a href="<?= base_url('admin/sample-bbm') ?>" class="dropdown-item">Tambah Data</a>
+									</div>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="<?= base_url('admin/user') ?>">
+										<i class="fa fa-user me-2"></i> Manage User
+									</a>
+								</li>
 							<?php endif ?>
 
 						</ul>
@@ -125,7 +131,41 @@
 			</div>
 		</div>
 	</header>
+	<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
+		style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="myModalLabel">Change Password</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+					</button>
+				</div>
+				<?= form_open($url . '/change-password')?>
+				<div class="modal-body">
 
+					<div class="row mb-4">
+						<label for="horizontal-email-input" class="col-sm-3 col-form-label">Password</label>
+						<div class="col-sm-9">
+							<input type="password" name="password" class="form-control" id="horizontal-email-input">
+						</div>
+					</div>
+
+					<div class="row mb-4">
+						<label for="horizontal-email-input" class="col-sm-3 col-form-label">Confirm Password</label>
+						<div class="col-sm-9">
+							<input type="password" name="confirm_password" class="form-control"
+								id="horizontal-email-input">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary w-md" value="Simpan" name="simpan">
+				</div>
+				<?= form_close() ?>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
 	<!-- ============================================================== -->
 	<!-- Start right Content here -->
 	<!-- ============================================================== -->

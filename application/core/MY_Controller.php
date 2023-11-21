@@ -5,8 +5,8 @@ class MY_Controller extends CI_Controller
 	public $title = 'QQMS - PT. Pertamina';
 
 	protected $status_sample = [
-		'waiting',
-		'release'
+	'waiting',
+	'release'
 	];
 	public function __construct()
 	{
@@ -88,14 +88,17 @@ class MY_Controller extends CI_Controller
 			$_FILES['userfile']['tmp_name'] = $_FILES[$tag_name]['tmp_name'][$key];
 			$_FILES['userfile']['error'] = $_FILES[$tag_name]['error'][$key];
 			$_FILES['userfile']['size'] = $_FILES[$tag_name]['size'][$key];
-			
-			if ($this->upload->do_upload('userfile')) {
-                $uploaded_files[] = $this->upload->data('file_name');
-            } else {
-                // Handle error if the upload fails
-                $error = array('error' => $this->upload->display_errors());
-                print_r($error);
-            }
+
+			if ( $this->upload->do_upload('userfile') )
+			{
+				$uploaded_files[] = $this->upload->data('file_name');
+			}
+			else
+			{
+				// Handle error if the upload fails
+				$error = array('error' => $this->upload->display_errors());
+				print_r($error);
+			}
 		}
 
 		return $uploaded_files;
@@ -149,4 +152,6 @@ class MY_Controller extends CI_Controller
 		rmdir($path);
 		return;
 	}
+
+	
 }

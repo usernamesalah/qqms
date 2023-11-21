@@ -30,9 +30,20 @@ class Sample_bbm_m extends MY_Model
 		'tanki'=> 7
 	];
 
-	public function getOrderedAndClosest()
+	public function getOrderedAndClosest($cond = '' , $limit = 0)
 	{
-		$query = $this->db->query('SELECT * , DATEDIFF( tanggal_release, NOW() ) as df FROM sample_bbm WHERE status != "release" ORDER BY DATEDIFF( tanggal_release, NOW() ) DESC;');
-		return $query->result();
+		$query = 'SELECT * , DATEDIFF( tanggal_release, NOW() ) as df FROM sample_bbm';
+		if($cond != '')
+		{
+			$query .= ' WHERE ' . $cond;
+		}
+		$query .=  ' ORDER BY DATEDIFF( tanggal_release, NOW() ) DESC ';
+
+		if($limit > 0){
+			$query .= ' LIMIT ' . $limit;
+		}
+
+		$q = $this->db->query($query);
+		return $q->result();
 	}
 }

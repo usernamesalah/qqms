@@ -82,4 +82,34 @@ class Pertashop extends MY_Controller
 
 		echo $html;
 	}
+	
+	public function change_password()
+	{
+		if ( $this->POST('simpan') )
+		{
+			if ( $this->POST('password') == "" )
+			{
+				$this->flashmsg('password tidak boleh kosong', 'danger');
+				redirect('pertashop');
+				exit;
+			}
+			if ( $this->POST('confirm_password') == "" )
+			{
+				$this->flashmsg('confirm password tidak boleh kosong', 'danger');
+				redirect('pertashop');
+				exit;
+			}
+			if ( $this->POST('password') != $this->POST('confirm_password') )
+			{
+				$this->flashmsg(' password tidak sama ', 'danger');
+				redirect('pertashop');
+				exit;
+			}
+			$this->User_m->update_where(['email' => $this->data['profile']->email], ['password' => password_hash($this->POST('password'), PASSWORD_BCRYPT)]);
+			$this->flashmsg('Success update password ', 'success');
+			redirect('pertashop');
+			exit;
+		}
+		exit;
+	}
 }

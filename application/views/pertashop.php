@@ -5,13 +5,21 @@
                 <?php
                 $url = ($profile->role == 0) ? 'admin' : 'gatekeeper' . '/berita-acara/tambah';
                 ?>
-                <a href="<?= base_url($url)?>" target="_blank" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Data</a>
-</div>
+                <a href="<?= base_url($url) ?>" target="_blank" class="btn btn-success"><i class="fa fa-plus"></i>
+                    Tambah
+                    Data</a>
+            </div>
             <div class="card-body">
 
-            <?= $this->session->flashdata('msg') ?>
-                <h4 class="card-title mb-5">Berita Acara Pengisian dibawah kapasitas kompartemen mobil tangki</h4>
-                <table id="datatable-buttons" class="table table-striped table-bordered table-responsive"
+                <?= $this->session->flashdata('msg') ?>
+                <h4 class="card-title mb-4">Berita Acara Pengisian dibawah kapasitas kompartemen mobil tangki</h4>
+                <div class="btn-group  mb-2" role="group" aria-label="Basic example">
+                    <a href="<?= base_url('admin/berita-acara')?>" class="btn btn-primary">Lihat Semua</a>
+                    <a href="<?= base_url('admin/berita-acara?status=1')?>" class="btn btn-primary">Approved</a>
+                    <a href="<?= base_url('admin/berita-acara?status=0')?>" class="btn btn-primary">Menunggu</a>
+                </div>
+                <hr>
+                <table id="datatable-buttons" class="table table-striped table-bordered table-responsive mt-4"
                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
@@ -21,22 +29,25 @@
                             <th>Tujuan</th>
                             <th>Nomor LO</th>
                             <th>Produk</th>
+                            <th>Status</th>
                             <th></th>
                         </tr>
                     </thead>
 
 
                     <tbody>
-                        <?php foreach ($ba as $b): ?>
+                        <?php
+                        if(isset($ba)) :
+                        foreach ($ba as $b): ?>
                             <tr>
                                 <td>
                                     <ul>
                                         <li>
-                                    <?= $b['nomor_polisi'] ?>
+                                            <?= $b['nomor_polisi'] ?>
 
                                         </li>
                                         <li>
-                                    <?= $b['nama_supir'] . " / " . $b['nama_kernet'] ?>
+                                            <?= $b['nama_supir'] . " / " . $b['nama_kernet'] ?>
 
                                         </li>
                                     </ul>
@@ -50,47 +61,66 @@
                                 <td>
                                     <ul>
                                         <li>
-                                            SPBU 1 : <?= $b['spbu_1']['tujuan'] ?>
-                        </li>
-                        <li>
-                                            SPBU 2 : <?= $b['spbu_2']['tujuan'] ?>
-                        </li>
-                        </ul>
-                                    
+                                            SPBU 1 :
+                                            <?= $b['spbu_1']['tujuan'] ?>
+                                        </li>
+                                        <li>
+                                            SPBU 2 :
+                                            <?= $b['spbu_2']['tujuan'] ?>
+                                        </li>
+                                    </ul>
+
                                 </td>
                                 <td>
-                                   
-                                <ul>
+
+                                    <ul>
                                         <li>
-                                            SPBU 1 : <?= $b['spbu_1']['nomor_lo'] ?>
-                        </li>
-                        <li>
-                                            SPBU 2 : <?= $b['spbu_2']['nomor_lo'] ?>
-                        </li>
-                        </ul>
+                                            SPBU 1 :
+                                            <?= $b['spbu_1']['nomor_lo'] ?>
+                                        </li>
+                                        <li>
+                                            SPBU 2 :
+                                            <?= $b['spbu_2']['nomor_lo'] ?>
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td>
-                                    
-                                <ul>
+
+                                    <ul>
                                         <li>
-                                            SPBU 1 : <?= $b['spbu_1']['produk'] ?>
-                        </li>
-                        <li>
-                                            SPBU 2 : <?= $b['spbu_2']['produk'] ?>
-                        </li>
-                        </ul>
+                                            SPBU 1 :
+                                            <?= $b['spbu_1']['produk'] ?>
+                                        </li>
+                                        <li>
+                                            SPBU 2 :
+                                            <?= $b['spbu_2']['produk'] ?>
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td>
                                     <?php
-                                    $nomor = str_replace("/" , "-" ,$b['nomor_surat']);
+                                    if ( $b['status'] == 0 )
+                                    {
+                                        echo '<span class="badge rounded-pill bg-warning">Menunggu Approval</span>';
+                                    }
+                                    else
+                                    {
+                                        echo '<span class="badge rounded-pill bg-success">Approved</span>';
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $nomor = str_replace("/", "-", $b['nomor_surat']);
                                     $role = ($profile->role == 0) ? 'admin' : 'gatekeeper';
                                     ?>
-                                    <a class="btn btn-sm btn-primary" href="<?= base_url($role .'/berita-acara/detail/' . strtolower($nomor))?>">
+                                    <a class="btn btn-sm btn-primary"
+                                        href="<?= base_url($role . '/berita-acara/detail/' . strtolower($nomor)) ?>">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php endforeach; endif; ?>
                     </tbody>
                 </table>
             </div>

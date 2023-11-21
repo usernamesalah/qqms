@@ -8,7 +8,14 @@
             <div class="card-body">
 
                 <?= $this->session->flashdata('msg') ?>
-                <h4 class="card-title mb-5">Daftar Stock Sample BBM</h4>
+                <h4 class="card-title mb-3">Daftar Stock Sample BBM</h4>
+
+                
+                <div class="btn-group  mb-2" role="group" aria-label="Basic example">
+                    <a href="<?= base_url('admin/sample-bbm')?>" class="btn btn-primary">Lihat Semua</a>
+                    <a href="<?= base_url('admin/sample-bbm?status=release')?>" class="btn btn-primary">Release</a>
+                    <a href="<?= base_url('admin/sample-bbm?status=waiting')?>" class="btn btn-primary">Menunggu</a>
+                </div>
                 <table id="datatable-buttons" class="table table-responsive"
                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>

@@ -35,7 +35,10 @@ class Admin extends MY_Controller
 
 	public function index()
 	{
+		$this->data['sample'] = $this->Sample_bbm_m->getOrderedAndClosest('status != "release"');
+		$this->data['sample_waiting'] = $this->Sample_bbm_m->get(['status' => 'waiting']);
 		$this->data['ba_acc'] = $this->Berita_acara_m->get(['status' => 0]);
+		$this->data['ba_nonacc'] = $this->Berita_acara_m->get(['status' => 1]);
 		$this->data['content'] = 'home';
 		$this->data['title'] = 'Home | ' . $this->title;
 
@@ -45,7 +48,12 @@ class Admin extends MY_Controller
 
 	public function berita_acara()
 	{
-		$ba= $this->Berita_acara_m->get(['status' => 0]);
+		$sta = $this->GET('status');
+		if(isset($sta)) {
+			$ba= $this->Berita_acara_m->get(['status' => $sta]);
+		} else {
+			$ba= $this->Berita_acara_m->get();
+		}
 		foreach ($ba as $value) {
 			if(isset($this->data['ba'][$value->nomor_surat])) {
 				$this->data['ba'][$value->nomor_surat]['spbu_2'] = [
@@ -206,7 +214,13 @@ class Admin extends MY_Controller
 
 	public function sample_bbm()
 	{
+		$st = $this->GET('status');
+		if(isset($st)) {
+			$this->data['sample'] = $this->Sample_bbm_m->getOrderedAndClosest(' status = "' . $st .'" ');
+		} else {
+			
 		$this->data['sample'] = $this->Sample_bbm_m->getOrderedAndClosest();
+		}
 		$this->data['content'] = 'sample_bbm';
 		$this->data['title'] = 'Data stock sample bbm | ' . $this->title;
 
@@ -284,6 +298,36 @@ class Admin extends MY_Controller
 		$this->Sample_bbm_m->delete($id);
 		$this->flashmsg('Berhasil delete sample bbm', 'success');
 		redirect('admin/sample-bbm');
+		exit;
+	}
+
+	public function change_password()
+	{
+		if ( $this->POST('simpan') )
+		{
+			if ( $this->POST('password') == "" )
+			{
+				$this->flashmsg('password tidak boleh kosong', 'danger');
+				redirect('admin');
+				exit;
+			}
+			if ( $this->POST('confirm_password') == "" )
+			{
+				$this->flashmsg('confirm password tidak boleh kosong', 'danger');
+				redirect('admin');
+				exit;
+			}
+			if ( $this->POST('password') != $this->POST('confirm_password') )
+			{
+				$this->flashmsg(' password tidak sama ', 'danger');
+				redirect('admin');
+				exit;
+			}
+			$this->User_m->update_where(['email' => $this->data['profile']->email], ['password' => password_hash($this->POST('password'), PASSWORD_BCRYPT)]);
+			$this->flashmsg('Success update password ', 'success');
+			redirect('admin');
+			exit;
+		}
 		exit;
 	}
 }

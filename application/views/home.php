@@ -50,16 +50,14 @@
             <div class="card-body">
             <h4 class="card-title mb-4">Notifikasi sample bbm</h4>
                 <ol class="activity-feed mb-0 ps-2" data-simplebar style="max-height: 50vh;">
+                <?php foreach($sample as $s) : ?>
                     <li class="feed-item">
                         <div class="feed-item-list">
-                            <p class=" mb-1 font-size-13 text-danger">Today</p>
-                            <p class="mb-0">Penyaluran Pertamax Memasuki masa tenggang <a href="#" class="text-primary">Lihat sekarang</a></p>
+                            <p class=" mb-1 font-size-15 badge <?= ($s->df*-1 > 3) ? 'bg-warning' : 'bg-danger' ?>">H <?= $s->df * -1 ?> Release </p>
+                            <p class="mb-0"><?= $s->jenis. ' - ' . $s->asal ?><a href="<?= base_url('admin/sample-bbm') ?>" class="text-primary"> Lihat sekarang</a></p>
                         </div>
                     </li>
-                    <li class="feed-item">
-                        <p class=" mb-1 font-size-13 text-warning">2 Hari lagi</p>
-                        <p class="mb-0">Penyaluran Pertamax Memasuki masa tenggang <a href="#" class="text-primary">Lihat sekarang</a></p>
-                    </li>
+                    <?php endforeach; ?>
                 </ol>
 
             </div>
@@ -78,12 +76,22 @@
                             <div id="total-revenue-chart"></div>
                         </div>
                         <div>
-                            <h4 class="mb-1 mt-1"><span data-plugin="counterup">10</span></h4>
+                            <h4 class="mb-1 mt-1"><span data-plugin="counterup"><?= count($ba_acc) ?></span></h4>
                             <p class=" mb-0">BA Pertashop butuh approve</p>
                         </div>
                     </div>
                 </div>
-
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="float-end mt-2">
+                            <div id="total-revenue-chart"></div>
+                        </div>
+                        <div>
+                            <h4 class="mb-1 mt-1"><span data-plugin="counterup"><?= count($ba_nonacc) ?></span></h4>
+                            <p class=" mb-0">BA Pertashop sudah di approve</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="card">
@@ -92,7 +100,7 @@
                             <div id="growth-chart"></div>
                         </div>
                         <div>
-                            <h4 class="mb-1 mt-1"><span data-plugin="counterup">5</span></h4>
+                            <h4 class="mb-1 mt-1"><span data-plugin="counterup"><?= count($sample_waiting) ?></span></h4>
                         </div>
                         <p class=" mt-3 mb-0"><span class="text-danger me-1">Sample BBM Memasuki masa
                                 pemusnahan</span>
