@@ -27,18 +27,24 @@ class Gatekeeper extends MY_Controller
 			exit;
 		}
 
-		$this->data['profile'] = $token;
+		$this->data['profile'] = $this->User_m->get_row(['email' => $token->email]);
 	}
 
 	public function index()
 	{
-		redirect('gatekeeper/berita-acara');
+		redirect('gatekeeper/berita-acara/tambah');
 			exit;
 	}
 
 	public function berita_acara()
 	{
-		$ba= $this->Berita_acara_m->get();
+		$sta = $this->GET('status');
+		if(isset($sta)) {
+			$ba= $this->Berita_acara_m->get(['status' => $sta , 'created_by' => $this->data['profile']->id]);
+		} else {
+			$ba= $this->Berita_acara_m->get(['created_by' => $this->data['profile']->id]);
+		}
+		
 		foreach ($ba as $value) {
 			if(isset($this->data['ba'][$value->nomor_surat])) {
 				$this->data['ba'][$value->nomor_surat]['spbu_2'] = [
@@ -55,18 +61,21 @@ class Gatekeeper extends MY_Controller
 					'nomor_polisi' => $value->nomor_polisi,
 					'jam_gate_out' =>$value->jam_gate_out,
 					'kapasitas_mt' => $value->kapasitas_mt,
+					'status' => $value->status ?: 0,
+					'created_at' =>$value->created_at,
 					'spbu_1' => [
-					'tujuan' =>$value->tujuan,
-					'produk' =>$value->produk,
-					'status' =>$value->status,
-					'nomor_lo' =>$value->nomor_lo,
-						'pengukuran_spbu_sebelum' => $value->pengukuran_spbu_sebelum,
-						'pengukuran_spbu_setelah' => $value->pengukuran_spbu_setelah
+						'tujuan' =>$value->tujuan,
+						'produk' =>$value->produk,
+						'created_at' =>$value->created_at,
+						'nomor_lo' =>$value->nomor_lo,
+							'pengukuran_spbu_sebelum' => $value->pengukuran_spbu_sebelum,
+							'pengukuran_spbu_setelah' => $value->pengukuran_spbu_setelah
 					]
 				];
 
 			}
 		}
+
 		$this->data['content'] = 'pertashop';
 		$this->data['title'] = 'BA Pertashop | ' . $this->title;
 		$this->template($this->data);
@@ -87,7 +96,9 @@ class Gatekeeper extends MY_Controller
 			 'nama_kernet' => $this->POST('nama_kernet'),
 			 'nomor_polisi' => str_replace(' ', '', $this->POST('nomor_polisi')),
 			 'jam_gate_out' => $this->POST('jam_gate_out'),
-			 'kapasitas_mt' => $this->POST('kapasitas_mt')
+			 'kapasitas_mt' => $this->POST('kapasitas_mt'),
+			 'created_at' => $this->POST('created_at') ?: date("Y-m-d h:i:s"),
+			 'created_by' => $this->data['profile']->id
 			];
 
 			$spbu1 = [
@@ -140,6 +151,7 @@ class Gatekeeper extends MY_Controller
 					'nomor_polisi' => $value->nomor_polisi,
 					'jam_gate_out' =>$value->jam_gate_out,
 					'kapasitas_mt' => $value->kapasitas_mt,
+					'status' => $value->status ?: 0,
 					'pengukuran_tbbm' => $value->pengukuran_tbbm,
 					'created_at' => $this->tanggal->convert_date($value->created_at),
 					'spbu_1' => [

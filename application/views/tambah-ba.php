@@ -7,13 +7,13 @@
                     <h5 class="font-size-14 mb-4"><i class="mdi mdi-arrow-right text-primary me-1"></i> Tambah Berita
                         Acara</h5>
                     <?= form_open('gatekeeper/berita-acara/tambah') ?>
+
+                    <div class="row">
+                        <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label" for="formrow-firstname-input">Nomor Polisi</label>
                         <input type="text" class="form-control" id="formrow-firstname-input" name="nomor_polisi">
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label" for="formrow-email-input">Nama Supir</label>
                                 <input type="text" class="form-control" id="formrow-email-input" name="nama_supir">
@@ -25,6 +25,11 @@
                             </div>
                         </div>
                         <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label" for="formrow-firstname-input">Tanggal Berita Acara</label>
+                                <input type="datetime-local" class="form-control" id="formrow-firstname-input"
+                                    name="created_at">
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label" for="formrow-password-input">Nama Kernet</label>
                                 <input type="text" class="form-control" id="formrow-password-input" name="nama_kernet">

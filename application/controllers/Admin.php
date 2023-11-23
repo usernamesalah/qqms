@@ -70,7 +70,8 @@ class Admin extends MY_Controller
 					'nomor_polisi' => $value->nomor_polisi,
 					'jam_gate_out' =>$value->jam_gate_out,
 					'kapasitas_mt' => $value->kapasitas_mt,
-					'status' => $value->status,
+					'status' => $value->status ?: 0,
+					'created_at' =>$value->created_at,
 					'spbu_1' => [
 					'tujuan' =>$value->tujuan,
 					'produk' =>$value->produk,
@@ -150,6 +151,23 @@ class Admin extends MY_Controller
 		redirect('admin/berita-acara');
 		exit;
 	}
+
+	public function delete_berita_acara($id)
+	{
+		if ( !isset($id) )
+		{
+			$this->flashmsg('Berita Acara tidak ditemukan', 'danger');
+			redirect('admin/berita-acara');
+			exit;
+		}
+
+		$id = str_replace('_' , "/", $id);
+		$this->Berita_acara_m->delete_by(['LOWER(nomor_surat)' => $id], ['status' => 1]);
+		$this->flashmsg('Berita Acara berhasil dihapus', 'success');
+		redirect('admin/berita-acara');
+		exit;
+	}
+
 	public function user()
 	{
 		if ( $this->POST('create') )

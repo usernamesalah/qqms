@@ -53,6 +53,8 @@ $route['default_controller'] = 'admin';
 $route['admin/berita-acara/tambah'] = 'admin/tambah-berita-acara';
 $route['admin/berita-acara/detail/(:any)'] = 'admin/detail-berita-acara/$1';
 $route['admin/berita-acara/approve/(:any)'] = 'admin/approve-berita-acara/$1';
+$route['admin/berita-acara/delete/(:any)'] = 'admin/delete-berita-acara/$1';
+
 $route['admin/user/delete/(:any)'] = 'admin/delete-user/$1';
 $route['admin/user/reset-password/(:any)'] = 'admin/reset-password-user/$1';
 

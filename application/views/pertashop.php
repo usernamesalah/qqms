@@ -3,9 +3,9 @@
         <div class="card">
             <div class="card-title m-3">
                 <?php
-                $url = ($profile->role == 0) ? 'admin' : 'gatekeeper' . '/berita-acara/tambah';
+                $url = ($profile->role == 0) ? 'admin' : 'gatekeeper'
                 ?>
-                <a href="<?= base_url($url) ?>" target="_blank" class="btn btn-success"><i class="fa fa-plus"></i>
+                <a href="<?= base_url($url . '/berita-acara/tambah') ?>" target="_blank" class="btn btn-success"><i class="fa fa-plus"></i>
                     Tambah
                     Data</a>
             </div>
@@ -14,9 +14,9 @@
                 <?= $this->session->flashdata('msg') ?>
                 <h4 class="card-title mb-4">Berita Acara Pengisian dibawah kapasitas kompartemen mobil tangki</h4>
                 <div class="btn-group  mb-2" role="group" aria-label="Basic example">
-                    <a href="<?= base_url('admin/berita-acara')?>" class="btn btn-primary">Lihat Semua</a>
-                    <a href="<?= base_url('admin/berita-acara?status=1')?>" class="btn btn-primary">Approved</a>
-                    <a href="<?= base_url('admin/berita-acara?status=0')?>" class="btn btn-primary">Menunggu</a>
+                    <a href="<?= base_url($url . '/berita-acara')?>" class="btn btn-primary">Lihat Semua</a>
+                    <a href="<?= base_url($url . '/berita-acara?status=1')?>" class="btn btn-primary">Approved</a>
+                    <a href="<?= base_url($url . '/berita-acara?status=0')?>" class="btn btn-primary">Menunggu</a>
                 </div>
                 <hr>
                 <table id="datatable-buttons" class="table table-striped table-bordered table-responsive mt-4"
@@ -24,6 +24,7 @@
                     <thead>
                         <tr>
                             <th>Mobil</th>
+                            <th>Created At</th>
                             <th>Jam Gate Out</th>
                             <th>Kapasitas MT (KL)</th>
                             <th>Tujuan</th>
@@ -51,6 +52,9 @@
 
                                         </li>
                                     </ul>
+                                </td>
+                                <td>
+                                    <?= $b['created_at'] ?>
                                 </td>
                                 <td>
                                     <?= $b['jam_gate_out'] ?>
@@ -114,10 +118,18 @@
                                     $nomor = str_replace("/", "-", $b['nomor_surat']);
                                     $role = ($profile->role == 0) ? 'admin' : 'gatekeeper';
                                     ?>
-                                    <a class="btn btn-sm btn-primary"
+                                    <div class="btn-group  mb-2" role="group" aria-label="Basic example">
+                                    <a class="btn btn-primary"
                                         href="<?= base_url($role . '/berita-acara/detail/' . strtolower($nomor)) ?>">
                                         <i class="fa fa-eye"></i>
                                     </a>
+                                    <?php if($profile->role == 0) : ?>
+                                        
+                                    <button onclick="deleteData(<?= $nomor ?>)" class="btn btn-danger"> 
+                                        <i class="fa fa-trash"></i></button>
+                                        <?php endif; ?>
+                                </div>
+                                    
                                 </td>
                             </tr>
                         <?php endforeach; endif; ?>
@@ -150,7 +162,8 @@
     $(document).ready(function () {
         $("#datatable").DataTable(),
             $("#datatable-buttons").DataTable({
-                lengthChange: !1, buttons: [
+                lengthChange: !1, 
+                buttons: [
                     {
                         extend: 'excel',
                         text: 'Export Excel',
@@ -167,9 +180,45 @@
                             columns: 'th:not(:last-child)'
                         }
                     },
-                ]
+                ],
+                "order": [1 , 'desc']
             })
                 .buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)"),
             $(".dataTables_length select").addClass("form-select form-select-sm")
     });
 </script>
+
+<script>
+			function deleteData(id) {
+				console.log(id);
+				Swal.fire({
+					title: "Apakah kamu ingin menghapus berita acara ini?",
+					text: "kamu tidak bisa mengembalikan nya lagi!",
+					icon: "warning",
+					showCancelButton: !0,
+					confirmButtonText: "Yes, delete it!",
+					cancelButtonText: "No, cancel!",
+					confirmButtonClass: "btn btn-success mt-2",
+					cancelButtonClass: "btn btn-danger ms-2 mt-2",
+					buttonsStyling: !1
+				}).then(function (t) {
+					t.value ? 
+						$.ajax({
+							type: 'GET',
+							url: '<?= base_url('admin/berita-acara/delete') ?>' + "/" + id,
+							success: function (response) {
+								window.location = '<?= base_url('admin/berita-acara') ?>';
+							},
+							error: function (error) {
+								console.log('Error:', error);
+							}
+						})
+					 : t.dismiss === Swal.DismissReason.cancel && Swal.fire({
+						title: "Cancelled",
+						text: "Berita Acara selamat tidak dihapus :)",
+						icon: "error"
+					})
+				})
+				
+			}
+	</script>

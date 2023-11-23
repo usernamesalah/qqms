@@ -46,7 +46,7 @@
 						<i class="uil-angle-down d-none d-xl-inline-block font-size-15"></i>
 					</button>
 					<div class="dropdown-menu dropdown-menu-end">
-						<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#myModal"><i
+						<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#chngpassword"><i
 								class="fa fa-user font-size-18 align-middle me-1 text-muted"></i> <span
 								class="align-middle">Ganti Password</span></a>
 						<a class="dropdown-item" href="<?= base_url('logout') ?>"><i
@@ -54,7 +54,7 @@
 								class="align-middle">Sign out</span></a>
 					</div>
 				</div>
-				<!-- <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#myModal">Standard modal</button> -->
+				<!-- <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#chngpassword">Standard modal</button> -->
 			</div>
 		</div>
 		<div class="container-fluid">
@@ -131,12 +131,12 @@
 			</div>
 		</div>
 	</header>
-	<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
+	<div id="chngpassword" class="modal fade" tabindex="-1" aria-labelledby="chngpasswordLabel" aria-hidden="true"
 		style="display: none;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="myModalLabel">Change Password</h5>
+					<h5 class="modal-title" id="chngpasswordLabel">Change Password</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					</button>
 				</div>
