@@ -48,6 +48,10 @@
                                 {
                                     $cl = "class='badge bg-warning'";
                                 }
+                                else
+                                {
+                                    $cl = "class='badge bg-secondary'";
+                                }
                             }
                             else
                             {
@@ -62,7 +66,7 @@
                                     <?= $bbm->jenis ?>
                                 </td>
                                 <td>
-                                    <?= $bbm->asal ?>
+                                    <?= $asal[$bbm->asal] ?>
                                 </td>
                                 <td>
                                     <?= $bbm->tanggal_masuk ?>

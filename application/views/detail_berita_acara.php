@@ -40,10 +40,10 @@
                             <th colspan="4">Hasil Pengukuran T2 Level cairan (mm)</th>
                         </tr>
                         <tr>
-                            <th></th>
+                            <th>TBBM</th>
                             <th>SPBU 1 (Sebelum Bongkar)</th>
                             <th>SPBU 1 (Setelah Bongkar)</th>
-                            <th>SPBU 1 (Sebelum Bongkar)</th>
+                            <th>SPBU 2 (Sebelum Bongkar)</th>
                         </tr>
                     </thead>
                     <tbody>

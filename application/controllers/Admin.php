@@ -37,7 +37,36 @@ class Admin extends MY_Controller
 	{
 		$this->data['sample'] = $this->Sample_bbm_m->getOrderedAndClosest('status != "release"');
 		$this->data['sample_waiting'] = $this->Sample_bbm_m->get(['status' => 'waiting']);
-		$this->data['ba_acc'] = $this->Berita_acara_m->get(['status' => 0]);
+		$ba_acc = $this->Berita_acara_m->get(['status' => 0]);
+		foreach ($ba_acc as $value) {
+			if(isset($this->data['ba_acc'][$value->nomor_surat])) {
+				$this->data['ba_acc'][$value->nomor_surat]['spbu_2'] = [
+					'tujuan' =>$value->tujuan,
+					'produk' =>$value->produk,
+					'nomor_lo' =>$value->nomor_lo,
+					'pengukuran_spbu_sebelum' => $value->pengukuran_spbu_sebelum
+				];
+			} else {
+				$this->data['ba_acc'][$value->nomor_surat] = [
+					'nomor_surat' =>$value->nomor_surat,
+					'nama_supir' => $value->nama_supir,
+					'nama_kernet' => $value->nama_kernet,
+					'nomor_polisi' => $value->nomor_polisi,
+					'jam_gate_out' =>$value->jam_gate_out,
+					'kapasitas_mt' => $value->kapasitas_mt,
+					'status' => $value->status ?: 0,
+					'created_at' =>$value->created_at,
+					'spbu_1' => [
+					'tujuan' =>$value->tujuan,
+					'produk' =>$value->produk,
+					'nomor_lo' =>$value->nomor_lo,
+						'pengukuran_spbu_sebelum' => $value->pengukuran_spbu_sebelum,
+						'pengukuran_spbu_setelah' => $value->pengukuran_spbu_setelah
+					]
+				];
+
+			}
+		}
 		$this->data['ba_nonacc'] = $this->Berita_acara_m->get(['status' => 1]);
 		$this->data['content'] = 'home';
 		$this->data['title'] = 'Home | ' . $this->title;
@@ -241,6 +270,7 @@ class Admin extends MY_Controller
 		}
 		$this->data['content'] = 'sample_bbm';
 		$this->data['title'] = 'Data stock sample bbm | ' . $this->title;
+		$this->data['asal'] =$this->Sample_bbm_m->asal;
 
 		$this->template($this->data);
 	}

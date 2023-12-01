@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
 
         <div class="page-title-box d-flex align-items-center justify-content-between">
             <h4 class="mb-0">Berita Acara</h4>
@@ -19,17 +19,30 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($ba_acc as $b) : ?>
+                            <?php foreach($ba_acc as $b) :
+                                
+                                $nomor = str_replace("/", "-", $b['nomor_surat']);
+                                 ?>
                             <tr>
                                 <td>
-                                    <?= $b->nomor_surat ?>
+                                    <?= $b['nomor_surat'] ?>
                                 </td>
-                                <td><?= $b->nomor_polisi ?></td>
+                                <td><?= $b['nomor_polisi'] ?></td>
                                 <td>
-                                <?= $b->tujuan ?>
+                                    
+                                <ul>
+                                            <li>
+                                                SPBU 1 :
+                                                <?= $b['spbu_1']['tujuan'] ?>
+                                            </li>
+                                            <li>
+                                                SPBU 2 :
+                                                <?= $b['spbu_2']['tujuan'] ?>
+                                            </li>
+                                        </ul>
                                 </td>
                                 <td>
-                                    <a href="<?= base_url('admin/berita-acara/detail/' .$b->id) ?>" class="btn btn-primary">detail</a>
+                                    <a href="<?= base_url('admin/berita-acara/detail/' .$nomor) ?>" class="btn btn-primary">detail</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -40,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
 
         <div class="page-title-box d-flex align-items-center justify-content-between">
             <h4 class="mb-0">Sample BBM</h4>
